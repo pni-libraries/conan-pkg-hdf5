@@ -20,7 +20,7 @@ class Hdf5Conan(ConanFile):
         tools.unzip(archive_file)
         # This small hack might be useful to guarantee proper /MT /MD linkage in MSVC
         # if the packaged project doesn't have variables to set it properly
-        tools.replace_in_file("hdf5-1.10.1/CMakeLists.txt", "PROJECT(HDF5 C CXX)", 
+        tools.replace_in_file("hdf5-1.10.1/CMakeLists.txt", "PROJECT(HDF5 C CXX)",
         '''PROJECT(HDF5 C CXX)
 include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
 conan_basic_setup()''')
@@ -33,10 +33,10 @@ conan_basic_setup()''')
 
         cmake = CMake(self)
         cmake_defs = {}
-        
+
         if self.options["shared"]:
             cmake_defs["BUILD_SHARED_LIBS"] = "ON"
-        
+
         cmake_defs["HDF5_BUILD_EXAMPLES"] = "OFF"
         cmake_defs["HDF5_BUILD_TOOLS"]="OFF"
         cmake_defs["HDF5_BUILD_HL_LIB"]="OFF"
@@ -49,8 +49,8 @@ conan_basic_setup()''')
 
         cmake.build()
 
-        #run here the unit tests - we consider the build to fail if one of the 
-        #unit-tests does not pass 
+        #run here the unit tests - we consider the build to fail if one of the
+        #unit-tests does not pass
         if self.settings.os=="Windows":
             cmake.build(target="RUN_TESTS")
         else:
