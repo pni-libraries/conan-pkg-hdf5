@@ -26,6 +26,11 @@ include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
 conan_basic_setup()''')
 
     def build(self):
+        self.source_dir = os.path.join(self.conanfile_directory,"hdf5-1.10.1")
+        self.build_dir = os.path.join(self.conanfile_directory,"build")
+        self.install_dir = os.path.join(self.conanfile_directory,"install")
+
+
         cmake = CMake(self)
         cmake_defs = {}
         
@@ -36,23 +41,23 @@ conan_basic_setup()''')
         cmake_defs["HDF5_BUILD_TOOLS"]="OFF"
         cmake_defs["HDF5_BUILD_HL_LIB"]="OFF"
         cmake_defs["HDF5_BUILD_CPP_LIB"]="OFF"
-        cmake.configure(source_dir =
-                os.path.join(self.conanfile_directory,"hdf5-1.10.1"),
+        cmake_defs["CMAKE_INSTALL_PREFIX"]=self.package_folder
+        cmake.configure(source_dir = self.source_dir,
                         defs = cmake_defs,
-                        build_dir = os.path.join(self.conanfile_directory,"build"))
+                        build_dir = self.build_dir)
 
         cmake.build()
 
         #run here the unit tests - we consider the build to fail if one of the 
         #unit-tests does not pass 
-        cmake.build(target="test")
+        #cmake.build(target="test")
+
+        #finally we call the install target which should greatly simplify the
+        #installation process in the package method
+        cmake.build(target="install")
 
     def package(self):
-        self.copy("*.h", dst="include", src="hello")
-        self.copy("*hello.lib", dst="lib", keep_path=False)
-        self.copy("*.dll", dst="bin", keep_path=False)
-        self.copy("*.so", dst="lib", keep_path=False)
-        self.copy("*.a", dst="lib", keep_path=False)
+        pass
 
     def package_info(self):
         self.cpp_info.libs = ["hdf5"]
