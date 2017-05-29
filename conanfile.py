@@ -50,7 +50,10 @@ conan_basic_setup()''')
 
         #run here the unit tests - we consider the build to fail if one of the 
         #unit-tests does not pass 
-        #cmake.build(target="test")
+        if self.settings.os=="Windows":
+            cmake.build(target="RUN_TESTS")
+        else:
+            cmake.build(target="test")
 
         #finally we call the install target which should greatly simplify the
         #installation process in the package method
