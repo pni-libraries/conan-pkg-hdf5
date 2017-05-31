@@ -10,8 +10,9 @@ class Hdf5Conan(ConanFile):
     license = "<Put the package license here>"
     #url = "https://www.hdfgroup.org/downloads/hdf5/source-code/"
     settings = "os", "compiler", "build_type", "arch"
-    options = {"shared": [True, False]}
-    default_options = "shared=True"
+    options = {"shared": [True, False],
+                "with_tests":[True,False]}
+    default_options = "shared=True","with_tests=False"
     requires="zlib/1.2.11@lasote/stable"
     generators = "cmake"
     exports_sources="*.tar.gz"
@@ -42,16 +43,21 @@ conan_basic_setup()''')
         cmake_defs["HDF5_BUILD_TOOLS"]="OFF"
         cmake_defs["HDF5_BUILD_HL_LIB"]="OFF"
         cmake_defs["HDF5_BUILD_CPP_LIB"]="OFF"
+        cmake_defs["HDF5_ENABLE_Z_LIB_SUPPORT"]="ON"
         cmake_defs["CMAKE_INSTALL_PREFIX"]=self.package_folder
+
         cmake.configure(source_dir = "hdf5-1.10.1",
                         defs = cmake_defs,
                         )
 
         cmake.build()
 
-        #run here the unit tests - we consider the build to fail if one of the
-        #unit-tests does not pass
-        #cmake.build(target="test")
+        # we to not want to run the tests all the time
+        if self.options.with_tests:
+            if self.settings.os=="Windows":
+                cmake.build(target="RUN_TESTS")
+            else:
+                cmake.build(target="test")
 
         #finally we call the install target which should greatly simplify the
         #installation process in the package method
