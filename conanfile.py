@@ -12,6 +12,7 @@ class Hdf5Conan(ConanFile):
     settings = "os", "compiler", "build_type", "arch"
     options = {"shared": [True, False]}
     default_options = "shared=True"
+    requires="zlib/1.2.11@lasote/stable"
     generators = "cmake"
     exports_sources="*.tar.gz"
 
@@ -20,7 +21,7 @@ class Hdf5Conan(ConanFile):
         tools.unzip(archive_file)
         # This small hack might be useful to guarantee proper /MT /MD linkage in MSVC
         # if the packaged project doesn't have variables to set it properly
-        tools.replace_in_file("hdf5-1.10.1/CMakeLists.txt", "PROJECT(HDF5 C CXX)", 
+        tools.replace_in_file("hdf5-1.10.1/CMakeLists.txt", "PROJECT(HDF5 C CXX)",
         '''PROJECT(HDF5 C CXX)
 include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
 conan_basic_setup()''')
@@ -33,23 +34,23 @@ conan_basic_setup()''')
 
         cmake = CMake(self)
         cmake_defs = {}
-        
+
         if self.options["shared"]:
             cmake_defs["BUILD_SHARED_LIBS"] = "ON"
-        
+
         cmake_defs["HDF5_BUILD_EXAMPLES"] = "OFF"
         cmake_defs["HDF5_BUILD_TOOLS"]="OFF"
         cmake_defs["HDF5_BUILD_HL_LIB"]="OFF"
         cmake_defs["HDF5_BUILD_CPP_LIB"]="OFF"
         cmake_defs["CMAKE_INSTALL_PREFIX"]=self.package_folder
-        cmake.configure(source_dir = self.source_dir,
+        cmake.configure(source_dir = "hdf5-1.10.1",
                         defs = cmake_defs,
-                        build_dir = self.build_dir)
+                        )
 
         cmake.build()
 
-        #run here the unit tests - we consider the build to fail if one of the 
-        #unit-tests does not pass 
+        #run here the unit tests - we consider the build to fail if one of the
+        #unit-tests does not pass
         #cmake.build(target="test")
 
         #finally we call the install target which should greatly simplify the
