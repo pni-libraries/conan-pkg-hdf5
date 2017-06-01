@@ -72,3 +72,9 @@ conan_basic_setup()''')
 
     def package_info(self):
         self.cpp_info.libs = ["hdf5"]
+
+    def imports(self):
+        #if on windows we have to import the zlib.dll to make the
+        #tests run
+        if self.settings.os=="Windows":
+            self.copy("*.dll","bin","bin")
