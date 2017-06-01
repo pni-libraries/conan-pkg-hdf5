@@ -22,7 +22,7 @@ class Hdf5Conan(ConanFile):
         tools.unzip(archive_file)
         # This small hack might be useful to guarantee proper /MT /MD linkage in MSVC
         # if the packaged project doesn't have variables to set it properly
-        tools.replace_in_file("hdf5-1.10.1/CMakeLists.txt", "PROJECT(HDF5 C CXX)",
+        tools.replace_in_file("hdf5-1.10.1/CMakeLists.txt", "PROJECT (HDF5 C CXX)",
         '''PROJECT(HDF5 C CXX)
 include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
 conan_basic_setup()''')
