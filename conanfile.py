@@ -13,7 +13,7 @@ class Hdf5Conan(ConanFile):
     options = {"shared": [True, False],
                 "with_tests":[True,False]}
     default_options = "shared=True","with_tests=False"
-    requires="zlib/1.2.11@lasote/stable"
+    requires="zlib/1.2.8@lasote/stable"
     generators = "cmake"
     exports_sources="*.tar.gz"
 
@@ -26,6 +26,10 @@ class Hdf5Conan(ConanFile):
         '''PROJECT(HDF5 C CXX)
 include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
 conan_basic_setup()''')
+
+    def configure(self):
+
+        self.options["zlib"].shared = self.options.shared
 
     def build(self):
         self.source_dir = os.path.join(self.conanfile_directory,"hdf5-1.10.1")
