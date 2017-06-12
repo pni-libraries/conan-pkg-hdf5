@@ -31,11 +31,7 @@ conan_basic_setup()''')
 
         self.options["zlib"].shared = self.options.shared
 
-    def build(self):
-        self.source_dir = os.path.join(self.conanfile_directory,"hdf5-1.10.1")
-        self.build_dir = os.path.join(self.conanfile_directory,"build")
-        self.install_dir = os.path.join(self.conanfile_directory,"install")
-
+    def build(self):    
 
         cmake = CMake(self)
         cmake_defs = {}
@@ -44,7 +40,7 @@ conan_basic_setup()''')
             cmake_defs["BUILD_SHARED_LIBS"] = "ON"
 
         cmake_defs["HDF5_BUILD_EXAMPLES"] = "OFF"
-        cmake_defs["HDF5_BUILD_TOOLS"]="OFF"
+        cmake_defs["HDF5_BUILD_TOOLS"]="ON"
         cmake_defs["HDF5_BUILD_HL_LIB"]="OFF"
         cmake_defs["HDF5_BUILD_CPP_LIB"]="OFF"
         cmake_defs["HDF5_ENABLE_Z_LIB_SUPPORT"]="ON"
@@ -57,7 +53,7 @@ conan_basic_setup()''')
         cmake.build()
 
         # we to not want to run the tests all the time
-        if self.options.with_tests:
+        if self.scope.run_tests:
             if self.settings.os=="Windows":
                 cmake.build(target="RUN_TESTS")
             else:
