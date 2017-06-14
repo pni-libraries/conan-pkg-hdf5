@@ -31,7 +31,7 @@ conan_basic_setup()''')
 
         self.options["zlib"].shared = self.options.shared
 
-    def build(self):    
+    def build(self):
 
         cmake = CMake(self)
         cmake_defs = {}
@@ -40,7 +40,7 @@ conan_basic_setup()''')
             cmake_defs["BUILD_SHARED_LIBS"] = "ON"
 
         cmake_defs["HDF5_BUILD_EXAMPLES"] = "OFF"
-        cmake_defs["HDF5_BUILD_TOOLS"]="ON"
+        cmake_defs["HDF5_BUILD_TOOLS"]="ON"        
         cmake_defs["HDF5_BUILD_HL_LIB"]="OFF"
         cmake_defs["HDF5_BUILD_CPP_LIB"]="OFF"
         cmake_defs["HDF5_ENABLE_Z_LIB_SUPPORT"]="ON"
