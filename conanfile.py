@@ -16,6 +16,11 @@ class Hdf5Conan(ConanFile):
     requires="zlib/1.2.8@lasote/stable"
     generators = "cmake"
     exports_sources="*.tar.gz"
+    exports = ["FindHDF5.cmake","FindHDF5_original.cmake",
+               "FindPackageHandleStandardArgs.cmake",
+               "SelectLibraryConfigurations.cmake",
+               "CMakeParseArguments.cmake",
+               "FindPackageMessage.cmake"]
 
     def source(self):
         archive_file = "hdf5-1.10.1.tar.gz"
@@ -40,7 +45,7 @@ conan_basic_setup()''')
             cmake_defs["BUILD_SHARED_LIBS"] = "ON"
 
         cmake_defs["HDF5_BUILD_EXAMPLES"] = "OFF"
-        cmake_defs["HDF5_BUILD_TOOLS"]="ON"        
+        cmake_defs["HDF5_BUILD_TOOLS"]="ON"
         cmake_defs["HDF5_BUILD_HL_LIB"]="OFF"
         cmake_defs["HDF5_BUILD_CPP_LIB"]="OFF"
         cmake_defs["HDF5_ENABLE_Z_LIB_SUPPORT"]="ON"
@@ -64,7 +69,12 @@ conan_basic_setup()''')
         cmake.build(target="install")
 
     def package(self):
-        pass
+        self.copy("FindHDF5.cmake",".",".")
+        self.copy("FindHDF5_original.cmake",".",".")
+        self.copy("FindPackageHandleStandardArgs.cmake",".",".")
+        self.copy("SelectLibraryConfigurations.cmake",".",".")
+        self.copy("CMakeParseArguments.cmake",".",".")
+        self.copy("FindPackageMessage.cmake",".",".")
 
     def package_info(self):
         self.cpp_info.libs = ["hdf5"]
