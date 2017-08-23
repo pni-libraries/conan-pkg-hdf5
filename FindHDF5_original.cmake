@@ -699,7 +699,7 @@ if( NOT HDF5_FOUND )
                     lib${LIB}d-static.a lib${LIB}_debug-static.a ${LIB}d-static ${LIB}_debug-static )
                 set( THIS_LIBRARY_SEARCH_RELEASE lib${LIB}.a ${LIB} lib${LIB}-static.a ${LIB}-static)
             else()
-                set( THIS_LIBRARY_SEARCH_DEBUG ${LIB}d ${LIB}_debug ${LIB}d-shared ${LIB}_debug-shared)
+                set( THIS_LIBRARY_SEARCH_DEBUG ${LIB}d ${LIB}_debug ${LIB}d-shared ${LIB}_debug-shared ${LIB}_D)
                 set( THIS_LIBRARY_SEARCH_RELEASE ${LIB} ${LIB}-shared)
             endif()
             find_library(HDF5_${LIB}_LIBRARY_DEBUG
