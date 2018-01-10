@@ -13,7 +13,7 @@ class Hdf5Conan(ConanFile):
     options = {"shared": [True, False],
                 "with_tests":[True,False]}
     default_options = "shared=True","with_tests=False"
-    requires="zlib/1.2.8@lasote/stable"
+    requires="zlib/1.2.8@conan/stable"
     generators = "cmake"
     exports_sources="*.tar.gz"
     exports = ["FindHDF5.cmake","FindHDF5_original.cmake",
@@ -56,13 +56,6 @@ conan_basic_setup()''')
                         )
 
         cmake.build()
-
-        # we to not want to run the tests all the time
-        if self.scope.run_tests:
-            if self.settings.os=="Windows":
-                cmake.build(target="RUN_TESTS")
-            else:
-                cmake.build(target="test")
 
         #finally we call the install target which should greatly simplify the
         #installation process in the package method
