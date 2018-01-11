@@ -20,6 +20,7 @@ class Hdf5TestConan(ConanFile):
     def imports(self):
         self.copy("*.dll", dst="bin", src="bin")
         self.copy("*.dylib*", dst="bin", src="lib")
+        self.copy("*.so*", dst="lib", src="lib")
 
     def test(self):
         os.chdir("bin")
