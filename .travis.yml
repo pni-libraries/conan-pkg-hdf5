@@ -14,7 +14,7 @@ before_script:
     
 script:
     - docker exec -it build bash -c "conan create -bmissing . eugenwintersberger/testing"
-    - docker exec -it build bash -c "conan export . eugenwintersberger/devel"
+    - docker exec -it build bash -c "conan export . eugenwintersberger/testing"
     - docker exec -it build bash -c "cd .. & conan upload -rdesypackages hdf5/1.10.1@eugenwintersberger/testing"
     
 after_script:
