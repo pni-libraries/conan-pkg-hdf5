@@ -70,7 +70,11 @@ conan_basic_setup()''')
         self.copy("FindPackageMessage.cmake",".",".")
 
     def package_info(self):
-        self.cpp_info.libs = ["hdf5"]
+        if self.settings.build_type=="Release":
+            self.cpp_info.libs = ["hdf5"]
+        elif self.settings.build_type=="Debug":
+            self.cpp_info.libs = ["hdf5_debug"]
+            
 
     def imports(self):
         #if on windows we have to import the zlib.dll to make the
