@@ -8,10 +8,11 @@ class Hdf5Conan(ConanFile):
     name = "hdf5"
     version = "1.10.1"
     license = "<Put the package license here>"
-    #url = "https://www.hdfgroup.org/downloads/hdf5/source-code/"
+    url = "https://github.com/pni-libraries/conan-pkg-hdf5"
     settings = "os", "compiler", "build_type", "arch"
     options = {"shared": [True, False],
                 "with_tests":[True,False]}
+    description = "HDF5 C and C++ libraries"
     default_options = "shared=True","with_tests=False"
     requires="zlib/1.2.8@conan/stable"
     generators = "cmake"
@@ -46,7 +47,7 @@ conan_basic_setup()''')
 
         cmake_defs["HDF5_BUILD_EXAMPLES"] = "OFF"
         cmake_defs["HDF5_BUILD_TOOLS"]="ON"
-        cmake_defs["HDF5_BUILD_HL_LIB"]="OFF"
+        cmake_defs["HDF5_BUILD_HL_LIB"]="ON"
         cmake_defs["HDF5_BUILD_CPP_LIB"]="OFF"
         cmake_defs["HDF5_ENABLE_Z_LIB_SUPPORT"]="ON"
         cmake_defs["CMAKE_INSTALL_PREFIX"]=self.package_folder
@@ -74,7 +75,7 @@ conan_basic_setup()''')
             self.cpp_info.libs = ["hdf5"]
         elif self.settings.build_type=="Debug":
             self.cpp_info.libs = ["hdf5_debug"]
-            
+
 
     def imports(self):
         #if on windows we have to import the zlib.dll to make the
